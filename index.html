@@ -593,6 +593,27 @@
       background: rgba(255, 255, 255, 0.88);
     }
 
+    .survey-option.bad-answer {
+      position: relative;
+      color: rgba(75, 16, 41, 0.72);
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px dashed rgba(199, 46, 88, 0.34);
+      transition: transform 180ms ease, background 180ms ease, opacity 180ms ease;
+    }
+
+    .survey-option.bad-answer::after {
+      content: "zły wybór";
+      display: inline-flex;
+      margin-left: 8px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(199, 46, 88, 0.12);
+      color: var(--rose-strong);
+      font-size: 0.7rem;
+      font-weight: 1000;
+      white-space: nowrap;
+    }
+
     .survey-result {
       min-height: 34px;
       margin: 0;
@@ -847,7 +868,7 @@
       <div class="certificate" id="certificate" aria-live="polite">
         <p class="certificate-kicker">dokument do odesłania</p>
         <h2>Certyfikat Zaklepania Randki dla Agnieszki</h2>
-        <p class="certificate-copy" id="certificateText">Niniejszym potwierdzam: Agnieszka, znana operacyjnie jako Skrzacik, zaakceptowała randkę. Wybrany klimat: do ustalenia. Próby odmowy: 0. Odwołanie możliwe tylko po negocjacjach przy bardzo bliskiej kawie.</p>
+        <p class="certificate-copy" id="certificateText">Niniejszym potwierdzam: Agnieszka, znana operacyjnie jako Skrzacik, zaakceptowała randkę. Wybrany klimat: do ustalenia. Plan: nie wylosowano. Wynik ankiety: ankieta nieukończona. Próby odmowy: 0. Odwołanie możliwe tylko po negocjacjach przy bardzo bliskiej kawie.</p>
         <div class="certificate-meta">
           <span>Podpis: Skrzacik, który wie, w co się pakuje</span>
           <span>Status: odeślij ten certyfikat jako dowód zgody i lekkiego braku rozsądku.</span>
@@ -917,6 +938,7 @@
     let lastRefusalAt = 0;
     let lastTeaseAt = 0;
     let selectedMood = "do ustalenia";
+    let selectedPlan = "nie wylosowano";
     let surveyIndex = 0;
     let surveyScore = 0;
     let surveyResultLabel = "ankieta nieukończona";
@@ -951,7 +973,8 @@
         answers: [
           { text: "Próbuję grzecznie, ale kontakt wzrokowy robi swoje.", score: 20 },
           { text: "Mówię: „uważaj, to już wygląda jak deklaracja”.", score: 25 },
-          { text: "Oddaję deser, ale zostawiam napięcie na stole.", score: 29 }
+          { text: "Oddaję deser, ale zostawiam napięcie na stole.", score: 29 },
+          { text: "Udaję, że wcale nie wiem, co robi ta łyżeczka.", score: 0, bad: true, tease: "Ta odpowiedź uciekła, bo nawet ona nie wierzy w taką niewinność." }
         ]
       },
       {
@@ -959,7 +982,8 @@
         answers: [
           { text: "Udajesz, że to przypadek. Bardzo długi przypadek.", score: 24 },
           { text: "Zabierasz popcorn, ale zostawiasz rękę za blisko.", score: 26 },
-          { text: "Patrzysz na ekran, jakby film nadal miał znaczenie.", score: 22 }
+          { text: "Patrzysz na ekran, jakby film nadal miał znaczenie.", score: 22 },
+          { text: "Odsuwam rękę i zachowuję dystans jak w urzędzie.", score: 0, bad: true, tease: "Dystans urzędowy? Nie w tym repertuarze, Skrzaciku." }
         ]
       },
       {
@@ -967,7 +991,8 @@
         answers: [
           { text: "„Zimno mi”, nawet jeśli pogoda temu zaprzecza.", score: 28 },
           { text: "Pokazujesz coś w telefonie i skracasz dystans.", score: 24 },
-          { text: "Pożyczona bluza, która wraca dopiero w drugim sezonie.", score: 30 }
+          { text: "Pożyczona bluza, która wraca dopiero w drugim sezonie.", score: 30 },
+          { text: "Siadam daleko, bo osobista przestrzeń musi oddychać.", score: 0, bad: true, tease: "Przestrzeń może oddychać, ale chemia właśnie przewróciła oczami." }
         ]
       },
       {
@@ -975,7 +1000,8 @@
         answers: [
           { text: "Mówi, że nie ma miejsca na deser. Podejrzane.", score: 26 },
           { text: "Nie łapie podtekstu. Trzeba będzie rysować.", score: 24 },
-          { text: "Odpisuje samo „ok”. Bez napięcia, bez klasy.", score: 22 }
+          { text: "Odpisuje samo „ok”. Bez napięcia, bez klasy.", score: 22 },
+          { text: "Twierdzi, że kanapa to tylko mebel.", score: 0, bad: true, tease: "Kanapa zgłosiła sprzeciw. To nie jest tylko mebel." }
         ]
       },
       {
@@ -983,7 +1009,8 @@
         answers: [
           { text: "„Dotarłem/am. Ale myślami jeszcze nie wyszedłem/wyszłam”.", score: 28 },
           { text: "„Kiedy drugi odcinek, Skrzaciku?”", score: 30 },
-          { text: "Mem, bo emocje trzeba opakować, zanim zrobią się za szczere.", score: 22 }
+          { text: "Mem, bo emocje trzeba opakować, zanim zrobią się za szczere.", score: 22 },
+          { text: "„Dziękuję za spotkanie, było poprawnie”.", score: 0, bad: true, tease: "Poprawnie? Ta randka właśnie wyprosiła tę odpowiedź z lokalu." }
         ]
       }
     ];
@@ -1007,11 +1034,59 @@
 
     function updateCertificate() {
       certificateText.textContent =
-        `Niniejszym potwierdzam: Agnieszka, znana jako Skrzacik, zaakceptowała randkę. Wybrany klimat: ${selectedMood}. Wynik ankiety: ${surveyResultLabel}. Próby odmowy: ${refusalAttempts}. Odwołanie możliwe tylko po negocjacjach przy bardzo bliskiej kawie.`;
+        `Niniejszym potwierdzam: Agnieszka, znana jako Skrzacik, zaakceptowała randkę. Wybrany klimat: ${selectedMood}. Plan: ${selectedPlan}. Wynik ankiety: ${surveyResultLabel}. Próby odmowy: ${refusalAttempts}. Odwołanie możliwe tylko po negocjacjach przy bardzo bliskiej kawie.`;
+    }
+
+    function requiredStepsLeft() {
+      const missing = [];
+
+      if (!accepted) {
+        missing.push("kliknąć Tak");
+      }
+
+      if (selectedMood === "do ustalenia") {
+        missing.push("wybrać klimat");
+      }
+
+      if (selectedPlan === "nie wylosowano") {
+        missing.push("wylosować plan");
+      }
+
+      if (surveyResultLabel === "ankieta nieukończona") {
+        missing.push("dokończyć ankietę");
+      }
+
+      return missing;
+    }
+
+    function updateCertificateVisibility() {
+      updateCertificate();
+
+      const missing = requiredStepsLeft();
+      const ready = missing.length === 0;
+      certificate.classList.toggle("show", ready);
+
+      if (!accepted) {
+        return;
+      }
+
+      if (ready) {
+        systemNote.textContent = "Certyfikat odblokowany. Teraz można go odesłać i udawać, że to formalność.";
+        systemNote.classList.add("show", "bump");
+        return;
+      }
+
+      systemNote.textContent = `Certyfikat jest zablokowany. Jeszcze trzeba: ${missing.join(", ")}.`;
+      systemNote.classList.add("show", "bump");
     }
 
     async function copyCertificate() {
-      updateCertificate();
+      updateCertificateVisibility();
+
+      if (!certificate.classList.contains("show")) {
+        setAnimatedText(moodResult, "Najpierw wypełnij wszystko. Komisja nie puszcza pustych rubryk.");
+        return;
+      }
 
       try {
         await navigator.clipboard.writeText(certificateText.textContent);
@@ -1036,12 +1111,27 @@
 
       question.answers.forEach((answer) => {
         const button = document.createElement("button");
-        button.className = "survey-option";
+        button.className = answer.bad ? "survey-option bad-answer" : "survey-option";
         button.type = "button";
         button.textContent = answer.text;
         button.dataset.score = answer.score;
+        button.dataset.bad = answer.bad ? "true" : "false";
+        button.dataset.tease = answer.tease || "";
         surveyOptions.appendChild(button);
       });
+    }
+
+    function dodgeBadSurveyAnswer(button) {
+      const range = compactViewport.matches ? 14 : 28;
+      const x = randomBetween(-range, range);
+      const y = randomBetween(-range, range);
+      button.style.transform = `translate(${x}px, ${y}px) rotate(${randomBetween(-2, 2)}deg)`;
+    }
+
+    function teaseBadSurveyAnswer(button) {
+      dodgeBadSurveyAnswer(button);
+      setAnimatedText(surveyResult, button.dataset.tease || "Zła odpowiedź uciekła. Podejrzanie rozsądne.");
+      spawnHearts(2);
     }
 
     function finishSurvey() {
@@ -1054,19 +1144,24 @@
       if (surveyScore >= 128) {
         surveyResultLabel = "flirt premium, temperatura rośnie bez ostrzeżenia";
       } else if (surveyScore >= 112) {
-        surveyResultLabel = "kompatybilność deserowa i bardzo nieprzypadkowy kontakt wzrokowy";
+        surveyResultLabel = "chemia przy stole i bardzo nieprzypadkowy kontakt wzrokowy";
       } else {
         surveyResultLabel = "słodki chaos, wymaga kawy i kontrolowanego skracania dystansu";
       }
 
-      setAnimatedText(surveyResult, `Wynik: ${surveyResultLabel}. Rekomendacja: randka, ale popcorn niech robi za alibi.`);
-      updateCertificate();
+      setAnimatedText(surveyResult, `Wynik: ${surveyResultLabel}. Rekomendacja: randka, a popcorn niech robi za alibi dla rąk.`);
+      updateCertificateVisibility();
       spawnHearts(12);
     }
 
     function chooseSurveyAnswer(event) {
       const button = event.target.closest(".survey-option");
       if (!button) {
+        return;
+      }
+
+      if (button.dataset.bad === "true") {
+        teaseBadSurveyAnswer(button);
         return;
       }
 
@@ -1086,7 +1181,7 @@
       surveyIndex = 0;
       surveyScore = 0;
       surveyResultLabel = "ankieta nieukończona";
-      updateCertificate();
+      updateCertificateVisibility();
       renderSurveyQuestion();
       setAnimatedText(surveyResult, "Reset ankiety. Komisja poprawia kołnierzyk i udaje, że nie wie, o co chodzi.");
     }
@@ -1218,11 +1313,8 @@
       updateLoveMeter(100);
       questionTitle.innerHTML = 'No i pięknie, Skrzaciku. Randka zaklepana <span class="pulse-heart" aria-hidden="true">♥</span>';
       setAnimatedText(mainMessage, "Odwołanie możliwe tylko po negocjacjach twarzą w twarz.");
-      systemNote.textContent = "Na końcu procedury: odeślij certyfikat. Tak działa dorosła romantyczna biurokracja.";
-      systemNote.classList.add("show");
       dateMoods.classList.add("show");
-      certificate.classList.add("show");
-      updateCertificate();
+      updateCertificateVisibility();
       launchConfetti();
       spawnHearts(30);
     }
@@ -1234,8 +1326,8 @@
       }
 
       selectedMood = tile.dataset.mood;
-      updateCertificate();
       setAnimatedText(moodResult, `Wybrano: ${selectedMood}. Przygotuj outfit i ten niewinny uśmiech.`);
+      updateCertificateVisibility();
       spawnHearts(10);
     }
 
@@ -1246,7 +1338,9 @@
       randomPlanButton.classList.add("spinning");
       planResult.textContent = "Plan się rozgrzewa...";
       setTimeout(() => {
+        selectedPlan = plan;
         setAnimatedText(planResult, `Plan: ${plan}. Brzmi jak pretekst, który nam pasuje.`);
+        updateCertificateVisibility();
       }, 430);
       spawnHearts(5);
     }
@@ -1388,6 +1482,19 @@
     randomPlanButton.addEventListener("click", drawRandomPlan);
     dramaToggle.addEventListener("click", toggleDrama);
     surveyOptions.addEventListener("click", chooseSurveyAnswer);
+    surveyOptions.addEventListener("pointerover", (event) => {
+      const button = event.target.closest(".bad-answer");
+      if (button) {
+        teaseBadSurveyAnswer(button);
+      }
+    });
+    surveyOptions.addEventListener("pointerdown", (event) => {
+      const button = event.target.closest(".bad-answer");
+      if (button) {
+        event.preventDefault();
+        teaseBadSurveyAnswer(button);
+      }
+    });
     surveyRestart.addEventListener("click", restartSurvey);
     arena.addEventListener("pointermove", dodgeWhenPointerIsClose);
     arena.addEventListener("contextmenu", (event) => {
