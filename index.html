@@ -1,0 +1,1337 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Czy pójdziesz ze mną na randkę?</title>
+  <style>
+    :root {
+      --bg-1: #fff2f6;
+      --bg-2: #ffdce8;
+      --bg-3: #ffc4d5;
+      --rose: #ff4f7f;
+      --rose-strong: #ff2f64;
+      --burgundy: #681532;
+      --burgundy-soft: #8f2447;
+      --ink: #401126;
+      --muted: #7a3d55;
+      --glass: rgba(255, 255, 255, 0.68);
+      --glass-strong: rgba(255, 255, 255, 0.84);
+      --line: rgba(255, 255, 255, 0.76);
+      --shadow: 0 24px 70px rgba(157, 28, 68, 0.22);
+      --soft-shadow: 0 14px 34px rgba(157, 28, 68, 0.17);
+      --focus: #2558ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg-1);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.95) 0 11%, transparent 31%),
+        radial-gradient(circle at 82% 18%, rgba(255, 79, 127, 0.22) 0 9%, transparent 28%),
+        radial-gradient(circle at 50% 95%, rgba(255, 47, 100, 0.2) 0 12%, transparent 34%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
+      overflow-x: hidden;
+      transition: background 360ms ease, color 360ms ease;
+    }
+
+    body.dramatic-mode {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 97, 140, 0.32) 0 16%, transparent 42%),
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.22) 0 8%, transparent 28%),
+        linear-gradient(135deg, #3a0d23, #7e1a3c 48%, #d44b70);
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+    }
+
+    button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    .ambient {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .ambient-heart {
+      position: absolute;
+      left: var(--left);
+      bottom: -70px;
+      color: rgba(255, 47, 100, 0.36);
+      font-size: var(--size);
+      filter: drop-shadow(0 12px 18px rgba(123, 18, 52, 0.22));
+      animation: floatHeart var(--time) linear infinite;
+      animation-delay: var(--delay);
+    }
+
+    @keyframes floatHeart {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        opacity: 0;
+      }
+      12% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translate3d(var(--drift), -112vh, 0) rotate(22deg);
+        opacity: 0;
+      }
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 22px 16px;
+    }
+
+    .main-card {
+      position: relative;
+      --tilt-x: 0deg;
+      --tilt-y: 0deg;
+      width: min(680px, 100%);
+      padding: clamp(22px, 6vw, 44px);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: var(--glass);
+      box-shadow: var(--shadow);
+      text-align: center;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      animation: cardFloat 5s ease-in-out infinite;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .main-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.64), transparent 45%),
+        radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.66), transparent 28%);
+    }
+
+    @keyframes cardFloat {
+      0%,
+      100% {
+        transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(0);
+      }
+      50% {
+        transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(-7px);
+      }
+    }
+
+    .stamp {
+      position: absolute;
+      top: 20px;
+      right: 18px;
+      z-index: 2;
+      padding: 8px 12px;
+      border: 2px solid rgba(255, 47, 100, 0.7);
+      border-radius: 12px;
+      color: var(--rose-strong);
+      font-size: 0.82rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+      transform: rotate(9deg);
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: var(--soft-shadow);
+      animation: stampIn 320ms ease both;
+    }
+
+    @keyframes stampIn {
+      0% {
+        transform: rotate(9deg) scale(1.35);
+        opacity: 0;
+      }
+      100% {
+        transform: rotate(9deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .mini-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 7px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.54);
+      color: var(--burgundy-soft);
+      font-size: 0.85rem;
+      font-weight: 900;
+      box-shadow: var(--soft-shadow);
+    }
+
+    h1 {
+      margin: 18px auto 0;
+      color: var(--burgundy);
+      font-size: clamp(2.25rem, 8vw, 4.7rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .pulse-heart {
+      display: inline-block;
+      transform-origin: center;
+      animation: pulseHeart 900ms ease-in-out infinite;
+    }
+
+    @keyframes pulseHeart {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.16);
+      }
+    }
+
+    .message {
+      min-height: 56px;
+      margin: 18px auto 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 3.8vw, 1.3rem);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .message.bump,
+    .result.bump,
+    .system-note.bump,
+    .survey-result.bump {
+      animation: textPop 260ms ease;
+    }
+
+    @keyframes textPop {
+      0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      margin-top: 4px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.58);
+      color: var(--burgundy);
+      font-weight: 900;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.78);
+    }
+
+    .love-meter {
+      position: relative;
+      width: min(340px, 100%);
+      height: 28px;
+      margin: 12px auto 0;
+      border: 1px solid rgba(255, 255, 255, 0.76);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.46);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.54), var(--soft-shadow);
+      overflow: hidden;
+    }
+
+    .love-meter span {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--love-level, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff86a8, #ff2f64);
+      transition: width 280ms ease;
+    }
+
+    .love-meter em {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      height: 100%;
+      color: var(--burgundy);
+      font-size: 0.8rem;
+      font-style: normal;
+      font-weight: 1000;
+    }
+
+    .button-arena {
+      position: relative;
+      width: 100%;
+      min-height: 158px;
+      margin: 24px auto 0;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.28);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      overflow: hidden;
+    }
+
+    .btn {
+      min-height: 54px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 1000;
+      letter-spacing: 0;
+      box-shadow: 0 15px 30px rgba(157, 28, 68, 0.24);
+      transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        opacity 180ms ease,
+        min-width 220ms ease,
+        padding 220ms ease,
+        font-size 220ms ease;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    .btn:hover {
+      box-shadow: 0 19px 38px rgba(157, 28, 68, 0.3);
+    }
+
+    .yes-button {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      min-width: min(210px, calc(50% - 20px));
+      background: linear-gradient(135deg, #ff4f86, #ff2f64);
+      transform: translateY(-50%);
+    }
+
+    .yes-button:hover {
+      transform: translateY(calc(-50% - 2px));
+    }
+
+    .no-button {
+      position: absolute;
+      z-index: 3;
+      min-width: 126px;
+      background: linear-gradient(135deg, #5d1834, #b32250);
+      white-space: nowrap;
+    }
+
+    .no-button.small {
+      min-width: 94px;
+      min-height: 46px;
+      padding: 11px 15px;
+      font-size: 0.9rem;
+    }
+
+    .no-button.tiny {
+      min-width: 72px;
+      min-height: 38px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+    }
+
+    .no-button.shake {
+      animation: buttonShake 240ms linear infinite;
+    }
+
+    @keyframes buttonShake {
+      0%,
+      100% {
+        translate: 0 0;
+      }
+      25% {
+        translate: -2px 1px;
+      }
+      50% {
+        translate: 2px -1px;
+      }
+      75% {
+        translate: -1px -2px;
+      }
+    }
+
+    .system-note {
+      min-height: 24px;
+      margin: 14px 0 0;
+      color: var(--burgundy-soft);
+      font-size: 0.95rem;
+      font-weight: 900;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .system-note.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .date-moods {
+      display: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .date-moods.show {
+      display: grid;
+      animation: textPop 300ms ease;
+    }
+
+    .mood-tile {
+      min-height: 62px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.62);
+      color: var(--burgundy);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 1000;
+      box-shadow: var(--soft-shadow);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .mood-tile:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.84);
+    }
+
+    .result {
+      min-height: 28px;
+      margin: 14px auto 0;
+      color: var(--burgundy);
+      font-weight: 900;
+      line-height: 1.4;
+    }
+
+    .certificate {
+      display: none;
+      margin-top: 22px;
+      padding: clamp(18px, 5vw, 30px);
+      border: 2px dashed rgba(255, 47, 100, 0.56);
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 232, 240, 0.82)),
+        radial-gradient(circle at 16% 12%, rgba(255, 79, 127, 0.16), transparent 30%);
+      color: var(--burgundy);
+      box-shadow: var(--soft-shadow);
+      animation: textPop 340ms ease;
+    }
+
+    .certificate.show {
+      display: block;
+    }
+
+    .certificate-kicker {
+      margin: 0;
+      color: var(--rose-strong);
+      font-size: 0.78rem;
+      font-weight: 1000;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .certificate h2 {
+      margin: 8px 0 0;
+      font-size: clamp(1.65rem, 6vw, 3rem);
+      line-height: 1.05;
+    }
+
+    .certificate-copy {
+      margin: 14px 0 0;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.66);
+      color: var(--ink);
+      line-height: 1.5;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.78);
+    }
+
+    .certificate-meta {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 850;
+    }
+
+    .certificate-actions {
+      margin-top: 16px;
+    }
+
+    .under-card {
+      display: grid;
+      gap: 12px;
+      width: min(680px, 100%);
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .secondary-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.46);
+      box-shadow: var(--soft-shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .survey-card {
+      display: grid;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .survey-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .survey-title {
+      margin: 0;
+      color: var(--burgundy);
+      font-size: clamp(1.25rem, 4.5vw, 1.75rem);
+      line-height: 1.1;
+    }
+
+    .survey-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--rose-strong);
+      font-size: 0.78rem;
+      font-weight: 1000;
+      white-space: nowrap;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+    }
+
+    .survey-progress {
+      position: relative;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.52);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+      overflow: hidden;
+    }
+
+    .survey-progress span {
+      display: block;
+      width: var(--survey-progress, 0%);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff91af, #ff2f64);
+      transition: width 260ms ease;
+    }
+
+    .survey-question {
+      min-height: 48px;
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.06rem;
+      font-weight: 950;
+      line-height: 1.35;
+    }
+
+    .survey-options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .survey-option {
+      width: 100%;
+      min-height: 54px;
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.68);
+      color: var(--burgundy);
+      cursor: pointer;
+      text-align: left;
+      font-weight: 900;
+      line-height: 1.3;
+      box-shadow: var(--soft-shadow);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .survey-option:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .survey-result {
+      min-height: 34px;
+      margin: 0;
+      color: var(--burgundy);
+      font-weight: 950;
+      line-height: 1.4;
+    }
+
+    .soft-button {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--burgundy);
+      cursor: pointer;
+      font-weight: 1000;
+      box-shadow: var(--soft-shadow);
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .soft-button:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .soft-button.spinning {
+      animation: planSpin 480ms ease;
+    }
+
+    @keyframes planSpin {
+      0%,
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+      32% {
+        transform: rotate(-2deg) scale(1.02);
+      }
+      64% {
+        transform: rotate(2deg) scale(1.02);
+      }
+    }
+
+    .dramatic-toggle[aria-pressed="true"] {
+      background: linear-gradient(135deg, #4b1029, #a9274f);
+      color: #fff;
+    }
+
+    .plan-result,
+    .drama-text,
+    .survey-result {
+      min-height: 26px;
+      margin: 10px 0 0;
+      color: var(--burgundy);
+      font-weight: 900;
+      line-height: 1.4;
+    }
+
+    body.dramatic-mode .main-card,
+    body.dramatic-mode .secondary-card {
+      border-color: rgba(255, 255, 255, 0.45);
+      background: rgba(255, 235, 242, 0.62);
+    }
+
+    .burst-layer,
+    .confetti-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      left: var(--left);
+      top: -24px;
+      width: 10px;
+      height: 18px;
+      border-radius: 4px;
+      background: var(--color);
+      animation: confettiDrop var(--time) ease-in forwards;
+    }
+
+    @keyframes confettiDrop {
+      to {
+        transform: translate3d(var(--drift), 112vh, 0) rotate(760deg);
+        opacity: 0;
+      }
+    }
+
+    .pop-heart {
+      position: absolute;
+      left: var(--left);
+      top: var(--top);
+      color: rgba(255, 47, 100, 0.88);
+      font-size: var(--size);
+      filter: drop-shadow(0 9px 16px rgba(100, 13, 40, 0.24));
+      animation: popHeart 1100ms ease-out forwards;
+    }
+
+    @keyframes popHeart {
+      to {
+        transform: translateY(-90px) scale(1.55) rotate(18deg);
+        opacity: 0;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (min-width: 640px) {
+      .app {
+        padding: 30px 20px;
+      }
+
+      .button-arena {
+        min-height: 174px;
+      }
+
+      .date-moods {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .under-card {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .secondary-card {
+        min-height: 126px;
+      }
+
+      .survey-card {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .main-card {
+        border-radius: 26px;
+      }
+
+      .button-arena {
+        min-height: 180px;
+      }
+
+      .yes-button {
+        left: 50%;
+        top: 42px;
+        min-width: min(230px, calc(100% - 26px));
+        transform: translateX(-50%);
+      }
+
+      .yes-button:hover {
+        transform: translateX(-50%) translateY(-2px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" id="ambientHearts" aria-hidden="true"></div>
+  <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+  <div class="burst-layer" id="burstLayer" aria-hidden="true"></div>
+
+  <main class="app">
+    <section class="main-card" aria-labelledby="questionTitle">
+      <div class="stamp hidden" id="finalStamp" aria-hidden="true">zaklepane</div>
+      <span class="mini-label">krótka ankieta romantyczna</span>
+      <h1 id="questionTitle">Czy pójdziesz ze mną na randkę? <span class="pulse-heart" aria-hidden="true">❤️</span></h1>
+      <p class="message" id="mainMessage" aria-live="polite">Wybierz mądrze. System patrzy.</p>
+      <p class="counter" aria-live="polite">Próby odmowy: <span id="attemptCounter">0</span></p>
+      <div class="love-meter" aria-label="Poziom przeznaczenia">
+        <span id="loveMeterBar"></span>
+        <em id="loveMeterText">Przeznaczenie: 0%</em>
+      </div>
+
+      <div class="button-arena" id="buttonArena">
+        <button class="btn yes-button" id="yesButton" type="button" aria-label="Tak, idę na randkę">Tak 😍</button>
+        <button class="btn no-button" id="noButton" type="button" aria-label="Nie, odmawiam randki">Nie 😈</button>
+      </div>
+
+      <p class="system-note show" id="systemNote" aria-live="polite">Chcesz odmówić? Spróbuj kliknąć „Nie” PPM. Lewy przycisk nie ma jurysdykcji.</p>
+
+      <div class="date-moods" id="dateMoods" aria-label="Wybierz klimat randki">
+        <button class="mood-tile" type="button" data-mood="Pizza">🍕 Pizza</button>
+        <button class="mood-tile" type="button" data-mood="Kino">🎬 Kino</button>
+        <button class="mood-tile" type="button" data-mood="Kawa">☕ Kawa</button>
+        <button class="mood-tile" type="button" data-mood="Spacer">🌙 Spacer</button>
+      </div>
+      <p class="result" id="moodResult" aria-live="polite"></p>
+      <div class="certificate" id="certificate" aria-live="polite">
+        <p class="certificate-kicker">dokument do odesłania</p>
+        <h2>Certyfikat Zaklepania Randki 💘</h2>
+        <p class="certificate-copy" id="certificateText">Niniejszym potwierdzam: randka została zaakceptowana. Wybrany klimat: do ustalenia. Próby odmowy: 0. Odwołanie możliwe tylko za zgodą komisji romantycznej.</p>
+        <div class="certificate-meta">
+          <span>Podpis: osoba o świetnym guście</span>
+          <span>Status: odeślij ten certyfikat jako dowód zgody.</span>
+        </div>
+        <div class="certificate-actions">
+          <button class="soft-button" id="copyCertificateButton" type="button">Skopiuj certyfikat do odesłania 📩</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="under-card" aria-label="Dodatkowe akcje">
+      <div class="secondary-card">
+        <button class="soft-button" id="randomPlanButton" type="button">Wylosuj plan randki 🎡</button>
+        <p class="plan-result" id="planResult" aria-live="polite"></p>
+      </div>
+      <div class="secondary-card">
+        <button class="soft-button dramatic-toggle" id="dramaToggle" type="button" aria-pressed="false">Tryb dramatyczny 🎭</button>
+        <p class="drama-text" id="dramaText" aria-live="polite"></p>
+      </div>
+      <div class="secondary-card survey-card" aria-label="Ankieta randkowa">
+        <div class="survey-header">
+          <h2 class="survey-title">Ankieta: czy wytrzymasz randkę? 😏</h2>
+          <span class="survey-pill" id="surveyStep">1/5</span>
+        </div>
+        <div class="survey-progress" aria-hidden="true"><span id="surveyProgress"></span></div>
+        <p class="survey-question" id="surveyQuestion" aria-live="polite"></p>
+        <div class="survey-options" id="surveyOptions"></div>
+        <p class="survey-result" id="surveyResult" aria-live="polite"></p>
+        <button class="soft-button hidden" id="surveyRestart" type="button">Jeszcze raz, komisja chce dramy 🔁</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const arena = document.getElementById("buttonArena");
+    const yesButton = document.getElementById("yesButton");
+    const noButton = document.getElementById("noButton");
+    const mainCard = document.querySelector(".main-card");
+    const mainMessage = document.getElementById("mainMessage");
+    const attemptCounter = document.getElementById("attemptCounter");
+    const loveMeterBar = document.getElementById("loveMeterBar");
+    const loveMeterText = document.getElementById("loveMeterText");
+    const systemNote = document.getElementById("systemNote");
+    const dateMoods = document.getElementById("dateMoods");
+    const moodResult = document.getElementById("moodResult");
+    const certificate = document.getElementById("certificate");
+    const certificateText = document.getElementById("certificateText");
+    const copyCertificateButton = document.getElementById("copyCertificateButton");
+    const randomPlanButton = document.getElementById("randomPlanButton");
+    const planResult = document.getElementById("planResult");
+    const dramaToggle = document.getElementById("dramaToggle");
+    const dramaText = document.getElementById("dramaText");
+    const surveyStep = document.getElementById("surveyStep");
+    const surveyProgress = document.getElementById("surveyProgress");
+    const surveyQuestion = document.getElementById("surveyQuestion");
+    const surveyOptions = document.getElementById("surveyOptions");
+    const surveyResult = document.getElementById("surveyResult");
+    const surveyRestart = document.getElementById("surveyRestart");
+    const ambientHearts = document.getElementById("ambientHearts");
+    const confettiLayer = document.getElementById("confettiLayer");
+    const burstLayer = document.getElementById("burstLayer");
+    const questionTitle = document.getElementById("questionTitle");
+    const finalStamp = document.getElementById("finalStamp");
+
+    let refusalAttempts = 0;
+    let accepted = false;
+    let lastRefusalAt = 0;
+    let lastTeaseAt = 0;
+    let selectedMood = "do ustalenia";
+    let surveyIndex = 0;
+    let surveyScore = 0;
+    let surveyResultLabel = "ankieta nieukończona";
+
+    const refusalMessages = [
+      "Serio? 😳",
+      "Za wolno 😎",
+      "Przeznaczenia nie oszukasz",
+      "Błąd 404: odmowa nie znaleziona",
+      "Amor właśnie zablokował tę decyzję",
+      "Ten przycisk nie ma mocy prawnej",
+      "System wykrył nieprawidłową odpowiedź",
+      "Dobra próba, ale nie tym razem"
+    ];
+
+    const datePlans = [
+      "pizza i film",
+      "kawa i spacer",
+      "kolacja i deser",
+      "kino i popcorn",
+      "spacer nocą",
+      "niespodzianka"
+    ];
+
+    const surveyQuestions = [
+      {
+        question: "Na randce ktoś mówi: „spróbuj mojego deseru”. Co robisz?",
+        answers: [
+          { text: "Biorę grzecznie łyżeczkę, ale patrzę podejrzanie długo.", score: 18 },
+          { text: "Mówię: „tylko jeśli to oficjalny etap relacji”.", score: 24 },
+          { text: "Oddaję deser, ale zostawiam sobie kontakt wzrokowy.", score: 28 }
+        ]
+      },
+      {
+        question: "Po kinie zostaje jeden popcorn na dnie pudełka. Kto ma prawo?",
+        answers: [
+          { text: "Osoba, która szybciej złapie. Prawo dżungli, ale romantycznej.", score: 18 },
+          { text: "Dzielimy na pół i udajemy, że to normalne.", score: 22 },
+          { text: "Oddaję, żeby wyglądać szlachetnie. Potem wypominam żartem.", score: 26 }
+        ]
+      },
+      {
+        question: "Poziom flirtu, który nie wymaga zgody zarządu:",
+        answers: [
+          { text: "Uśmiech + mem wysłany za szybko.", score: 16 },
+          { text: "Muśnięcie dłoni przy popcornie, niby przypadkiem.", score: 26 },
+          { text: "Pożyczona bluza, która wraca dopiero w drugim sezonie.", score: 30 }
+        ]
+      },
+      {
+        question: "Największa czerwona flaga?",
+        answers: [
+          { text: "Nie lubi frytek. To już audyt charakteru.", score: 20 },
+          { text: "Odpisuje samo „ok”. Bez emotki. Bez serca.", score: 24 },
+          { text: "Mówi, że nie ma miejsca na deser. Podejrzane.", score: 28 }
+        ]
+      },
+      {
+        question: "Po randce piszesz:",
+        answers: [
+          { text: "„Dotarłem/am. Uśmiech też dotarł”.", score: 24 },
+          { text: "Wysyłam mema, bo emocje trzeba opakować w format JPG.", score: 20 },
+          { text: "„Kiedy drugi odcinek?”", score: 30 }
+        ]
+      }
+    ];
+
+    function randomBetween(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function setAnimatedText(element, text) {
+      element.textContent = text;
+      element.classList.remove("bump");
+      void element.offsetWidth;
+      element.classList.add("bump");
+    }
+
+    function updateLoveMeter(value) {
+      const level = Math.max(0, Math.min(100, value));
+      loveMeterBar.style.setProperty("--love-level", `${level}%`);
+      loveMeterText.textContent = `Przeznaczenie: ${level}%`;
+    }
+
+    function updateCertificate() {
+      certificateText.textContent =
+        `Niniejszym potwierdzam: randka została zaakceptowana. Wybrany klimat: ${selectedMood}. Wynik ankiety: ${surveyResultLabel}. Próby odmowy: ${refusalAttempts}. Odwołanie możliwe tylko za zgodą komisji romantycznej.`;
+    }
+
+    async function copyCertificate() {
+      updateCertificate();
+
+      try {
+        await navigator.clipboard.writeText(certificateText.textContent);
+        setAnimatedText(moodResult, "Certyfikat skopiowany. Teraz trzeba go odesłać, bo system lubi papierologię 😌");
+      } catch (error) {
+        setAnimatedText(moodResult, "Nie udało się skopiować automatycznie. Zaznacz certyfikat i odeślij go ręcznie, jak w epoce kamienia romantycznego.");
+      }
+
+      spawnHearts(8);
+    }
+
+    function renderSurveyQuestion() {
+      const question = surveyQuestions[surveyIndex];
+      const progress = Math.round((surveyIndex / surveyQuestions.length) * 100);
+
+      surveyStep.textContent = `${surveyIndex + 1}/${surveyQuestions.length}`;
+      surveyProgress.style.setProperty("--survey-progress", `${progress}%`);
+      surveyQuestion.textContent = question.question;
+      surveyResult.textContent = "";
+      surveyRestart.classList.add("hidden");
+      surveyOptions.innerHTML = "";
+
+      question.answers.forEach((answer) => {
+        const button = document.createElement("button");
+        button.className = "survey-option";
+        button.type = "button";
+        button.textContent = answer.text;
+        button.dataset.score = answer.score;
+        surveyOptions.appendChild(button);
+      });
+    }
+
+    function finishSurvey() {
+      surveyProgress.style.setProperty("--survey-progress", "100%");
+      surveyStep.textContent = "wynik";
+      surveyQuestion.textContent = "Komisja randkowa zakończyła obrady.";
+      surveyOptions.innerHTML = "";
+      surveyRestart.classList.remove("hidden");
+
+      if (surveyScore >= 128) {
+        surveyResultLabel = "flirt premium, ryzyko motyli bardzo wysokie";
+      } else if (surveyScore >= 112) {
+        surveyResultLabel = "kompatybilność deserowa i lekko niebezpieczny urok";
+      } else {
+        surveyResultLabel = "słodki chaos, wymaga kawy i nadzoru romantycznego";
+      }
+
+      setAnimatedText(surveyResult, `Wynik: ${surveyResultLabel}. Rekomendacja: randka, ale ktoś ma pilnować popcornu.`);
+      updateCertificate();
+      spawnHearts(12);
+    }
+
+    function chooseSurveyAnswer(event) {
+      const button = event.target.closest(".survey-option");
+      if (!button) {
+        return;
+      }
+
+      surveyScore += Number(button.dataset.score);
+      surveyIndex += 1;
+      spawnHearts(4);
+
+      if (surveyIndex >= surveyQuestions.length) {
+        finishSurvey();
+        return;
+      }
+
+      renderSurveyQuestion();
+    }
+
+    function restartSurvey() {
+      surveyIndex = 0;
+      surveyScore = 0;
+      surveyResultLabel = "ankieta nieukończona";
+      updateCertificate();
+      renderSurveyQuestion();
+      setAnimatedText(surveyResult, "Reset ankiety. Komisja zakłada okulary i udaje profesjonalizm.");
+    }
+
+    function moveNoButton() {
+      if (accepted || noButton.classList.contains("hidden")) {
+        return;
+      }
+
+      const arenaRect = arena.getBoundingClientRect();
+      const buttonRect = noButton.getBoundingClientRect();
+      const padding = 10;
+      const maxLeft = Math.max(padding, arenaRect.width - buttonRect.width - padding);
+      const maxTop = Math.max(padding, arenaRect.height - buttonRect.height - padding);
+      let left = randomBetween(padding, maxLeft);
+      let top = randomBetween(padding, maxTop);
+
+      if (!yesButton.classList.contains("hidden")) {
+        const yesRect = yesButton.getBoundingClientRect();
+
+        for (let tries = 0; tries < 16; tries += 1) {
+          const candidateLeft = randomBetween(padding, maxLeft);
+          const candidateTop = randomBetween(padding, maxTop);
+          const candidate = {
+            left: arenaRect.left + candidateLeft,
+            right: arenaRect.left + candidateLeft + buttonRect.width,
+            top: arenaRect.top + candidateTop,
+            bottom: arenaRect.top + candidateTop + buttonRect.height
+          };
+          const overlapsYes =
+            candidate.left < yesRect.right + 8 &&
+            candidate.right > yesRect.left - 8 &&
+            candidate.top < yesRect.bottom + 8 &&
+            candidate.bottom > yesRect.top - 8;
+
+          if (!overlapsYes) {
+            left = candidateLeft;
+            top = candidateTop;
+            break;
+          }
+        }
+      }
+
+      noButton.style.left = `${left}px`;
+      noButton.style.top = `${top}px`;
+    }
+
+    function updateNoButtonState() {
+      noButton.classList.toggle("small", refusalAttempts >= 3 && refusalAttempts < 5);
+      noButton.classList.toggle("tiny", refusalAttempts >= 5);
+
+      if (refusalAttempts >= 8) {
+        noButton.textContent = "Nie, ale właściwie tak 😅";
+        noButton.setAttribute("aria-label", "Nie, ale właściwie tak");
+      }
+
+      if (refusalAttempts >= 10) {
+        noButton.classList.add("hidden");
+        setAnimatedText(mainMessage, "Demokracja została zakończona. Została tylko miłość.");
+      }
+    }
+
+    function teaseNoAttempt(event) {
+      if (accepted || noButton.classList.contains("hidden")) {
+        return;
+      }
+
+      if (event) {
+        event.preventDefault();
+      }
+
+      const now = Date.now();
+      if (now - lastTeaseAt > 700) {
+        setAnimatedText(mainMessage, "Ładnie podchodzisz, ale odmowa liczy się dopiero po PPM 😈");
+        lastTeaseAt = now;
+      }
+
+      moveNoButton();
+    }
+
+    function refusalMessageForAttempt() {
+      if (refusalAttempts === 3) {
+        return "Nie uciekaj od przeznaczenia 😌";
+      }
+
+      if (refusalAttempts === 10) {
+        return "Demokracja została zakończona. Została tylko miłość.";
+      }
+
+      return refusalMessages[(refusalAttempts - 1) % refusalMessages.length];
+    }
+
+    function handleRefusalAttempt(event) {
+      if (accepted || noButton.classList.contains("hidden")) {
+        return;
+      }
+
+      const now = Date.now();
+      if (now - lastRefusalAt < 240) {
+        return;
+      }
+      lastRefusalAt = now;
+
+      if (event) {
+        event.preventDefault();
+      }
+
+      refusalAttempts += 1;
+      attemptCounter.textContent = refusalAttempts;
+      updateLoveMeter(refusalAttempts * 10);
+      setAnimatedText(mainMessage, refusalMessageForAttempt());
+
+      if (refusalAttempts >= 5) {
+        systemNote.textContent = "System odrzucił Twoją odmowę.";
+        systemNote.classList.add("show", "bump");
+      }
+
+      updateNoButtonState();
+      spawnHearts(7);
+      moveNoButton();
+    }
+
+    function acceptDate() {
+      accepted = true;
+      noButton.classList.add("hidden");
+      yesButton.classList.add("hidden");
+      arena.classList.add("hidden");
+      finalStamp.classList.remove("hidden");
+      updateLoveMeter(100);
+      questionTitle.innerHTML = 'No i pięknie, randka zaklepana <span class="pulse-heart" aria-hidden="true">💘</span>';
+      setAnimatedText(mainMessage, "Odwołanie możliwe tylko za zgodą komisji romantycznej.");
+      systemNote.textContent = "Na końcu procedury: odeślij certyfikat. Tak działa romantyczna biurokracja.";
+      systemNote.classList.add("show");
+      dateMoods.classList.add("show");
+      certificate.classList.add("show");
+      updateCertificate();
+      launchConfetti();
+      spawnHearts(30);
+    }
+
+    function chooseMood(event) {
+      const tile = event.target.closest("[data-mood]");
+      if (!tile) {
+        return;
+      }
+
+      selectedMood = tile.dataset.mood;
+      updateCertificate();
+      setAnimatedText(moodResult, `Wybrano: ${selectedMood}. Przygotuj outfit 😌`);
+      spawnHearts(10);
+    }
+
+    function drawRandomPlan() {
+      const plan = datePlans[randomBetween(0, datePlans.length - 1)];
+      randomPlanButton.classList.remove("spinning");
+      void randomPlanButton.offsetWidth;
+      randomPlanButton.classList.add("spinning");
+      planResult.textContent = "Koło przeznaczenia się rozkręca...";
+      setTimeout(() => {
+        setAnimatedText(planResult, `Plan: ${plan}. Brzmi podejrzanie dobrze.`);
+      }, 430);
+      spawnHearts(5);
+    }
+
+    function toggleDrama() {
+      const isOn = !document.body.classList.contains("dramatic-mode");
+      document.body.classList.toggle("dramatic-mode", isOn);
+      dramaToggle.setAttribute("aria-pressed", String(isOn));
+      noButton.classList.toggle("shake", isOn && !accepted);
+      setAnimatedText(dramaText, isOn ? "Odmowa? W tej ekonomii emocjonalnej?" : "");
+    }
+
+    function dodgeWhenPointerIsClose(event) {
+      if (accepted || event.pointerType === "touch") {
+        return;
+      }
+
+      const rect = noButton.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
+
+      if (distance < 92) {
+        teaseNoAttempt(event);
+      }
+    }
+
+    function tiltCard(event) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
+
+      const rect = mainCard.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      mainCard.style.setProperty("--tilt-x", `${(-y * 4).toFixed(2)}deg`);
+      mainCard.style.setProperty("--tilt-y", `${(x * 5).toFixed(2)}deg`);
+    }
+
+    function resetCardTilt() {
+      mainCard.style.setProperty("--tilt-x", "0deg");
+      mainCard.style.setProperty("--tilt-y", "0deg");
+    }
+
+    function launchConfetti() {
+      const colors = ["#ff2f64", "#ff86a8", "#ffffff", "#ffd166", "#8f2447", "#ffc4d5"];
+      confettiLayer.innerHTML = "";
+
+      for (let i = 0; i < 86; i += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti";
+        piece.style.setProperty("--left", `${Math.random() * 100}%`);
+        piece.style.setProperty("--drift", `${randomBetween(-120, 120)}px`);
+        piece.style.setProperty("--time", `${randomBetween(1800, 3400)}ms`);
+        piece.style.setProperty("--color", colors[i % colors.length]);
+        confettiLayer.appendChild(piece);
+      }
+
+      setTimeout(() => {
+        confettiLayer.innerHTML = "";
+      }, 3600);
+    }
+
+    function spawnHearts(count) {
+      for (let i = 0; i < count; i += 1) {
+        const heart = document.createElement("span");
+        heart.className = "pop-heart";
+        heart.textContent = i % 4 === 0 ? "💘" : "❤️";
+        heart.style.setProperty("--left", `${randomBetween(12, 88)}%`);
+        heart.style.setProperty("--top", `${randomBetween(16, 82)}%`);
+        heart.style.setProperty("--size", `${randomBetween(18, 38)}px`);
+        burstLayer.appendChild(heart);
+        setTimeout(() => heart.remove(), 1150);
+      }
+    }
+
+    function createAmbientHearts() {
+      for (let i = 0; i < 16; i += 1) {
+        const heart = document.createElement("span");
+        heart.className = "ambient-heart";
+        heart.textContent = i % 3 === 0 ? "💖" : "❤️";
+        heart.style.setProperty("--left", `${randomBetween(0, 100)}%`);
+        heart.style.setProperty("--drift", `${randomBetween(-70, 70)}px`);
+        heart.style.setProperty("--size", `${randomBetween(18, 42)}px`);
+        heart.style.setProperty("--time", `${randomBetween(9000, 17000)}ms`);
+        heart.style.setProperty("--delay", `${randomBetween(0, 9000)}ms`);
+        ambientHearts.appendChild(heart);
+      }
+    }
+
+    noButton.addEventListener("pointerenter", (event) => {
+      if (event.pointerType === "mouse" || event.pointerType === "pen") {
+        teaseNoAttempt(event);
+      }
+    });
+
+    noButton.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "touch" || event.button === 2) {
+        handleRefusalAttempt(event);
+        return;
+      }
+
+      if (event.button === 0) {
+        teaseNoAttempt(event);
+      }
+    });
+
+    noButton.addEventListener("click", (event) => {
+      if (event.detail === 0) {
+        handleRefusalAttempt(event);
+        return;
+      }
+
+      teaseNoAttempt(event);
+    });
+
+    noButton.addEventListener("contextmenu", (event) => {
+      handleRefusalAttempt(event);
+    });
+
+    yesButton.addEventListener("click", acceptDate);
+    dateMoods.addEventListener("click", chooseMood);
+    copyCertificateButton.addEventListener("click", copyCertificate);
+    randomPlanButton.addEventListener("click", drawRandomPlan);
+    dramaToggle.addEventListener("click", toggleDrama);
+    surveyOptions.addEventListener("click", chooseSurveyAnswer);
+    surveyRestart.addEventListener("click", restartSurvey);
+    arena.addEventListener("pointermove", dodgeWhenPointerIsClose);
+    arena.addEventListener("contextmenu", (event) => {
+      handleRefusalAttempt(event);
+    });
+    mainCard.addEventListener("pointermove", tiltCard);
+    mainCard.addEventListener("pointerleave", resetCardTilt);
+    window.addEventListener("resize", moveNoButton);
+
+    createAmbientHearts();
+    renderSurveyQuestion();
+    updateLoveMeter(0);
+    moveNoButton();
+  </script>
+</body>
+</html>
