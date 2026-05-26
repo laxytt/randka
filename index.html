@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Czy pójdziesz ze mną na randkę?</title>
+  <title>Agnieszka, czy pójdziesz ze mną na randkę?</title>
   <style>
     :root {
-      --bg-1: #fff2f6;
-      --bg-2: #ffdce8;
-      --bg-3: #ffc4d5;
-      --rose: #ff4f7f;
-      --rose-strong: #ff2f64;
-      --burgundy: #681532;
-      --burgundy-soft: #8f2447;
-      --ink: #401126;
-      --muted: #7a3d55;
-      --glass: rgba(255, 255, 255, 0.68);
-      --glass-strong: rgba(255, 255, 255, 0.84);
-      --line: rgba(255, 255, 255, 0.76);
-      --shadow: 0 24px 70px rgba(157, 28, 68, 0.22);
-      --soft-shadow: 0 14px 34px rgba(157, 28, 68, 0.17);
+      --bg-1: #fbf1f4;
+      --bg-2: #ead0d8;
+      --bg-3: #9f4159;
+      --rose: #d84c70;
+      --rose-strong: #c72e58;
+      --burgundy: #4b1029;
+      --burgundy-soft: #74304a;
+      --ink: #2d0d1b;
+      --muted: #6c3b4d;
+      --glass: rgba(255, 251, 252, 0.72);
+      --glass-strong: rgba(255, 251, 252, 0.88);
+      --line: rgba(255, 255, 255, 0.62);
+      --shadow: 0 22px 54px rgba(84, 15, 39, 0.2);
+      --soft-shadow: 0 12px 28px rgba(84, 15, 39, 0.14);
       --focus: #2558ff;
     }
 
@@ -38,9 +38,9 @@
       color: var(--ink);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.95) 0 11%, transparent 31%),
-        radial-gradient(circle at 82% 18%, rgba(255, 79, 127, 0.22) 0 9%, transparent 28%),
-        radial-gradient(circle at 50% 95%, rgba(255, 47, 100, 0.2) 0 12%, transparent 34%),
+        radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.72) 0 9%, transparent 29%),
+        radial-gradient(circle at 82% 18%, rgba(142, 42, 72, 0.18) 0 8%, transparent 27%),
+        radial-gradient(circle at 50% 95%, rgba(90, 18, 44, 0.16) 0 12%, transparent 34%),
         linear-gradient(135deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
       overflow-x: hidden;
       transition: background 360ms ease, color 360ms ease;
@@ -118,8 +118,8 @@
       background: var(--glass);
       box-shadow: var(--shadow);
       text-align: center;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       animation: cardFloat 5s ease-in-out infinite;
       overflow: hidden;
       transform-style: preserve-3d;
@@ -192,7 +192,7 @@
     h1 {
       margin: 18px auto 0;
       color: var(--burgundy);
-      font-size: clamp(2.25rem, 8vw, 4.7rem);
+      font-size: clamp(2rem, 7vw, 4.15rem);
       line-height: 1.02;
       letter-spacing: 0;
     }
@@ -217,7 +217,7 @@
       min-height: 56px;
       margin: 18px auto 0;
       color: var(--muted);
-      font-size: clamp(1.05rem, 3.8vw, 1.3rem);
+      font-size: clamp(1rem, 3.2vw, 1.2rem);
       font-weight: 800;
       line-height: 1.35;
     }
@@ -731,12 +731,47 @@
     }
 
     @media (max-width: 420px) {
+      body {
+        background:
+          radial-gradient(circle at 18% 10%, rgba(255, 255, 255, 0.66) 0 10%, transparent 30%),
+          linear-gradient(145deg, #fbf1f4, #e6c7d0 62%, #b45a70);
+      }
+
+      .ambient {
+        display: none;
+      }
+
+      .app {
+        min-height: 100svh;
+        padding: 12px;
+      }
+
       .main-card {
+        width: 100%;
+        padding: 18px 14px;
         border-radius: 26px;
+        animation: none;
+        box-shadow: 0 16px 36px rgba(84, 15, 39, 0.18);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .mini-label {
+        max-width: 100%;
+        font-size: 0.74rem;
+      }
+
+      h1 {
+        font-size: clamp(1.95rem, 11vw, 2.9rem);
+      }
+
+      .message {
+        min-height: 44px;
       }
 
       .button-arena {
-        min-height: 180px;
+        min-height: 168px;
+        margin-top: 16px;
       }
 
       .yes-button {
@@ -748,6 +783,21 @@
 
       .yes-button:hover {
         transform: translateX(-50%) translateY(-2px);
+      }
+
+      .secondary-card {
+        padding: 12px;
+        border-radius: 20px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+
+      .survey-title {
+        font-size: 1.12rem;
+      }
+
+      .survey-option {
+        min-height: 50px;
       }
     }
 
@@ -771,9 +821,9 @@
   <main class="app">
     <section class="main-card" aria-labelledby="questionTitle">
       <div class="stamp hidden" id="finalStamp" aria-hidden="true">zaklepane</div>
-      <span class="mini-label">krótka ankieta romantyczna</span>
-      <h1 id="questionTitle">Czy pójdziesz ze mną na randkę? <span class="pulse-heart" aria-hidden="true">❤️</span></h1>
-      <p class="message" id="mainMessage" aria-live="polite">Wybierz mądrze. System patrzy.</p>
+      <span class="mini-label">prywatne zaproszenie dla Agnieszki · aka Skrzacik</span>
+      <h1 id="questionTitle">Agnieszka, idziesz ze mną na randkę? <span class="pulse-heart" aria-hidden="true">♥</span></h1>
+      <p class="message" id="mainMessage" aria-live="polite">Skrzaciku, kliknij „Tak”. Resztę ustalimy bliżej.</p>
       <p class="counter" aria-live="polite">Próby odmowy: <span id="attemptCounter">0</span></p>
       <div class="love-meter" aria-label="Poziom przeznaczenia">
         <span id="loveMeterBar"></span>
@@ -781,52 +831,52 @@
       </div>
 
       <div class="button-arena" id="buttonArena">
-        <button class="btn yes-button" id="yesButton" type="button" aria-label="Tak, idę na randkę">Tak 😍</button>
-        <button class="btn no-button" id="noButton" type="button" aria-label="Nie, odmawiam randki">Nie 😈</button>
+        <button class="btn yes-button" id="yesButton" type="button" aria-label="Tak, idę na randkę">Tak, Skrzaciku</button>
+        <button class="btn no-button" id="noButton" type="button" aria-label="Nie, odmawiam randki">Nie</button>
       </div>
 
-      <p class="system-note show" id="systemNote" aria-live="polite">Chcesz odmówić? Spróbuj kliknąć „Nie” PPM. Lewy przycisk nie ma jurysdykcji.</p>
+      <p class="system-note show" id="systemNote" aria-live="polite">Chcesz odmówić? Spróbuj kliknąć „Nie” PPM. Lewy klik to tylko niewinne dotknięcie.</p>
 
       <div class="date-moods" id="dateMoods" aria-label="Wybierz klimat randki">
-        <button class="mood-tile" type="button" data-mood="Pizza">🍕 Pizza</button>
-        <button class="mood-tile" type="button" data-mood="Kino">🎬 Kino</button>
-        <button class="mood-tile" type="button" data-mood="Kawa">☕ Kawa</button>
-        <button class="mood-tile" type="button" data-mood="Spacer">🌙 Spacer</button>
+        <button class="mood-tile" type="button" data-mood="Pizza">Pizza</button>
+        <button class="mood-tile" type="button" data-mood="Kino">Kino</button>
+        <button class="mood-tile" type="button" data-mood="Kawa">Kawa</button>
+        <button class="mood-tile" type="button" data-mood="Spacer nocą">Spacer nocą</button>
       </div>
       <p class="result" id="moodResult" aria-live="polite"></p>
       <div class="certificate" id="certificate" aria-live="polite">
         <p class="certificate-kicker">dokument do odesłania</p>
-        <h2>Certyfikat Zaklepania Randki 💘</h2>
-        <p class="certificate-copy" id="certificateText">Niniejszym potwierdzam: randka została zaakceptowana. Wybrany klimat: do ustalenia. Próby odmowy: 0. Odwołanie możliwe tylko za zgodą komisji romantycznej.</p>
+        <h2>Certyfikat Zaklepania Randki dla Agnieszki</h2>
+        <p class="certificate-copy" id="certificateText">Niniejszym potwierdzam: Agnieszka, znana operacyjnie jako Skrzacik, zaakceptowała randkę. Wybrany klimat: do ustalenia. Próby odmowy: 0. Odwołanie możliwe tylko po negocjacjach przy bardzo bliskiej kawie.</p>
         <div class="certificate-meta">
-          <span>Podpis: osoba o świetnym guście</span>
-          <span>Status: odeślij ten certyfikat jako dowód zgody.</span>
+          <span>Podpis: Skrzacik, który wie, w co się pakuje</span>
+          <span>Status: odeślij ten certyfikat jako dowód zgody i lekkiego braku rozsądku.</span>
         </div>
         <div class="certificate-actions">
-          <button class="soft-button" id="copyCertificateButton" type="button">Skopiuj certyfikat do odesłania 📩</button>
+          <button class="soft-button" id="copyCertificateButton" type="button">Skopiuj certyfikat do odesłania</button>
         </div>
       </div>
     </section>
 
     <section class="under-card" aria-label="Dodatkowe akcje">
       <div class="secondary-card">
-        <button class="soft-button" id="randomPlanButton" type="button">Wylosuj plan randki 🎡</button>
+        <button class="soft-button" id="randomPlanButton" type="button">Wylosuj plan randki</button>
         <p class="plan-result" id="planResult" aria-live="polite"></p>
       </div>
       <div class="secondary-card">
-        <button class="soft-button dramatic-toggle" id="dramaToggle" type="button" aria-pressed="false">Tryb dramatyczny 🎭</button>
+        <button class="soft-button dramatic-toggle" id="dramaToggle" type="button" aria-pressed="false">Tryb dramatyczny</button>
         <p class="drama-text" id="dramaText" aria-live="polite"></p>
       </div>
       <div class="secondary-card survey-card" aria-label="Ankieta randkowa">
         <div class="survey-header">
-          <h2 class="survey-title">Ankieta: czy wytrzymasz randkę? 😏</h2>
+          <h2 class="survey-title">Ankieta dla Skrzacika: ile napięcia zniesiesz?</h2>
           <span class="survey-pill" id="surveyStep">1/5</span>
         </div>
         <div class="survey-progress" aria-hidden="true"><span id="surveyProgress"></span></div>
         <p class="survey-question" id="surveyQuestion" aria-live="polite"></p>
         <div class="survey-options" id="surveyOptions"></div>
         <p class="survey-result" id="surveyResult" aria-live="polite"></p>
-        <button class="soft-button hidden" id="surveyRestart" type="button">Jeszcze raz, komisja chce dramy 🔁</button>
+        <button class="soft-button hidden" id="surveyRestart" type="button">Jeszcze raz, komisja chce więcej rumieńców</button>
       </div>
     </section>
   </main>
@@ -871,65 +921,69 @@
     let surveyScore = 0;
     let surveyResultLabel = "ankieta nieukończona";
 
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointer = window.matchMedia("(pointer: coarse)");
+    const compactViewport = window.matchMedia("(max-width: 520px)");
+
     const refusalMessages = [
-      "Serio? 😳",
-      "Za wolno 😎",
-      "Przeznaczenia nie oszukasz",
-      "Błąd 404: odmowa nie znaleziona",
-      "Amor właśnie zablokował tę decyzję",
-      "Ten przycisk nie ma mocy prawnej",
-      "System wykrył nieprawidłową odpowiedź",
-      "Dobra próba, ale nie tym razem"
+      "Skrzaciku, nie prowokuj.",
+      "Za blisko. I za wolno.",
+      "Przeznaczenia nie oszukasz, nawet PPM.",
+      "Błąd 404: wymówka spadła z łóżka.",
+      "Amor zablokował tę decyzję i zgasił światło.",
+      "Ten przycisk nie ma mocy prawnej po 22:00.",
+      "System wykrył napięcie w powietrzu.",
+      "Dobra próba, ale ja mam lepszy refleks."
     ];
 
     const datePlans = [
-      "pizza i film",
-      "kawa i spacer",
-      "kolacja i deser",
-      "kino i popcorn",
-      "spacer nocą",
-      "niespodzianka"
+      "pizza, film i zbyt wygodna kanapa",
+      "kawa i spacer z podejrzanie bliskim dystansem",
+      "kolacja i deser, którego nikt nie oddaje bez negocjacji",
+      "kino i popcorn jako oficjalny pretekst",
+      "spacer nocą i cisza, która mówi za dużo",
+      "niespodzianka w wersji dla dorosłych, ale z klasą"
     ];
 
     const surveyQuestions = [
       {
-        question: "Na randce ktoś mówi: „spróbuj mojego deseru”. Co robisz?",
+        question: "Skrzacik dostaje deser z jednej łyżeczki. Co robisz?",
         answers: [
-          { text: "Biorę grzecznie łyżeczkę, ale patrzę podejrzanie długo.", score: 18 },
-          { text: "Mówię: „tylko jeśli to oficjalny etap relacji”.", score: 24 },
-          { text: "Oddaję deser, ale zostawiam sobie kontakt wzrokowy.", score: 28 }
+          { text: "Próbuję grzecznie, ale kontakt wzrokowy robi swoje.", score: 20 },
+          { text: "Mówię: „uważaj, to już wygląda jak deklaracja”.", score: 25 },
+          { text: "Oddaję deser, ale zostawiam napięcie na stole.", score: 29 }
         ]
       },
       {
-        question: "Po kinie zostaje jeden popcorn na dnie pudełka. Kto ma prawo?",
+        question: "W kinie przypadkiem dotykają się dłonie przy popcornie. Reakcja?",
         answers: [
-          { text: "Osoba, która szybciej złapie. Prawo dżungli, ale romantycznej.", score: 18 },
-          { text: "Dzielimy na pół i udajemy, że to normalne.", score: 22 },
-          { text: "Oddaję, żeby wyglądać szlachetnie. Potem wypominam żartem.", score: 26 }
+          { text: "Udajesz, że to przypadek. Bardzo długi przypadek.", score: 24 },
+          { text: "Zabierasz popcorn, ale zostawiasz rękę za blisko.", score: 26 },
+          { text: "Patrzysz na ekran, jakby film nadal miał znaczenie.", score: 22 }
         ]
       },
       {
-        question: "Poziom flirtu, który nie wymaga zgody zarządu:",
+        question: "Najbezpieczniejszy pretekst, żeby usiąść bliżej:",
         answers: [
-          { text: "Uśmiech + mem wysłany za szybko.", score: 16 },
-          { text: "Muśnięcie dłoni przy popcornie, niby przypadkiem.", score: 26 },
+          { text: "„Zimno mi”, nawet jeśli pogoda temu zaprzecza.", score: 28 },
+          { text: "Pokazujesz coś w telefonie i skracasz dystans.", score: 24 },
           { text: "Pożyczona bluza, która wraca dopiero w drugim sezonie.", score: 30 }
         ]
       },
       {
-        question: "Największa czerwona flaga?",
+        question: "Największa czerwona flaga na randce?",
         answers: [
-          { text: "Nie lubi frytek. To już audyt charakteru.", score: 20 },
-          { text: "Odpisuje samo „ok”. Bez emotki. Bez serca.", score: 24 },
-          { text: "Mówi, że nie ma miejsca na deser. Podejrzane.", score: 28 }
+          { text: "Mówi, że nie ma miejsca na deser. Podejrzane.", score: 26 },
+          { text: "Nie łapie podtekstu. Trzeba będzie rysować.", score: 24 },
+          { text: "Odpisuje samo „ok”. Bez napięcia, bez klasy.", score: 22 }
         ]
       },
       {
-        question: "Po randce piszesz:",
+        question: "Po randce wiadomość idealna brzmi:",
         answers: [
-          { text: "„Dotarłem/am. Uśmiech też dotarł”.", score: 24 },
-          { text: "Wysyłam mema, bo emocje trzeba opakować w format JPG.", score: 20 },
-          { text: "„Kiedy drugi odcinek?”", score: 30 }
+          { text: "„Dotarłem/am. Ale myślami jeszcze nie wyszedłem/wyszłam”.", score: 28 },
+          { text: "„Kiedy drugi odcinek, Skrzaciku?”", score: 30 },
+          { text: "Mem, bo emocje trzeba opakować, zanim zrobią się za szczere.", score: 22 }
         ]
       }
     ];
@@ -953,7 +1007,7 @@
 
     function updateCertificate() {
       certificateText.textContent =
-        `Niniejszym potwierdzam: randka została zaakceptowana. Wybrany klimat: ${selectedMood}. Wynik ankiety: ${surveyResultLabel}. Próby odmowy: ${refusalAttempts}. Odwołanie możliwe tylko za zgodą komisji romantycznej.`;
+        `Niniejszym potwierdzam: Agnieszka, znana jako Skrzacik, zaakceptowała randkę. Wybrany klimat: ${selectedMood}. Wynik ankiety: ${surveyResultLabel}. Próby odmowy: ${refusalAttempts}. Odwołanie możliwe tylko po negocjacjach przy bardzo bliskiej kawie.`;
     }
 
     async function copyCertificate() {
@@ -961,7 +1015,7 @@
 
       try {
         await navigator.clipboard.writeText(certificateText.textContent);
-        setAnimatedText(moodResult, "Certyfikat skopiowany. Teraz trzeba go odesłać, bo system lubi papierologię 😌");
+        setAnimatedText(moodResult, "Certyfikat skopiowany. Teraz odeślij go, Skrzaciku. System lubi dowody na piśmie.");
       } catch (error) {
         setAnimatedText(moodResult, "Nie udało się skopiować automatycznie. Zaznacz certyfikat i odeślij go ręcznie, jak w epoce kamienia romantycznego.");
       }
@@ -998,14 +1052,14 @@
       surveyRestart.classList.remove("hidden");
 
       if (surveyScore >= 128) {
-        surveyResultLabel = "flirt premium, ryzyko motyli bardzo wysokie";
+        surveyResultLabel = "flirt premium, temperatura rośnie bez ostrzeżenia";
       } else if (surveyScore >= 112) {
-        surveyResultLabel = "kompatybilność deserowa i lekko niebezpieczny urok";
+        surveyResultLabel = "kompatybilność deserowa i bardzo nieprzypadkowy kontakt wzrokowy";
       } else {
-        surveyResultLabel = "słodki chaos, wymaga kawy i nadzoru romantycznego";
+        surveyResultLabel = "słodki chaos, wymaga kawy i kontrolowanego skracania dystansu";
       }
 
-      setAnimatedText(surveyResult, `Wynik: ${surveyResultLabel}. Rekomendacja: randka, ale ktoś ma pilnować popcornu.`);
+      setAnimatedText(surveyResult, `Wynik: ${surveyResultLabel}. Rekomendacja: randka, ale popcorn niech robi za alibi.`);
       updateCertificate();
       spawnHearts(12);
     }
@@ -1034,7 +1088,7 @@
       surveyResultLabel = "ankieta nieukończona";
       updateCertificate();
       renderSurveyQuestion();
-      setAnimatedText(surveyResult, "Reset ankiety. Komisja zakłada okulary i udaje profesjonalizm.");
+      setAnimatedText(surveyResult, "Reset ankiety. Komisja poprawia kołnierzyk i udaje, że nie wie, o co chodzi.");
     }
 
     function moveNoButton() {
@@ -1085,13 +1139,13 @@
       noButton.classList.toggle("tiny", refusalAttempts >= 5);
 
       if (refusalAttempts >= 8) {
-        noButton.textContent = "Nie, ale właściwie tak 😅";
-        noButton.setAttribute("aria-label", "Nie, ale właściwie tak");
+        noButton.textContent = "Nie, ale już mięknę";
+        noButton.setAttribute("aria-label", "Nie, ale już mięknę");
       }
 
       if (refusalAttempts >= 10) {
         noButton.classList.add("hidden");
-        setAnimatedText(mainMessage, "Demokracja została zakończona. Została tylko miłość.");
+        setAnimatedText(mainMessage, "Demokracja zakończona. Zostało napięcie i bardzo dobra decyzja.");
       }
     }
 
@@ -1106,7 +1160,7 @@
 
       const now = Date.now();
       if (now - lastTeaseAt > 700) {
-        setAnimatedText(mainMessage, "Ładnie podchodzisz, ale odmowa liczy się dopiero po PPM 😈");
+        setAnimatedText(mainMessage, "Ładnie podchodzisz, Skrzaciku. Ale odmowa liczy się dopiero po PPM.");
         lastTeaseAt = now;
       }
 
@@ -1115,11 +1169,11 @@
 
     function refusalMessageForAttempt() {
       if (refusalAttempts === 3) {
-        return "Nie uciekaj od przeznaczenia 😌";
+        return "Nie uciekaj od przeznaczenia, Skrzaciku.";
       }
 
       if (refusalAttempts === 10) {
-        return "Demokracja została zakończona. Została tylko miłość.";
+        return "Demokracja zakończona. Zostało napięcie i bardzo dobra decyzja.";
       }
 
       return refusalMessages[(refusalAttempts - 1) % refusalMessages.length];
@@ -1146,7 +1200,7 @@
       setAnimatedText(mainMessage, refusalMessageForAttempt());
 
       if (refusalAttempts >= 5) {
-        systemNote.textContent = "System odrzucił Twoją odmowę.";
+        systemNote.textContent = "System odrzucił odmowę. Uzasadnienie: za dużo chemii.";
         systemNote.classList.add("show", "bump");
       }
 
@@ -1162,9 +1216,9 @@
       arena.classList.add("hidden");
       finalStamp.classList.remove("hidden");
       updateLoveMeter(100);
-      questionTitle.innerHTML = 'No i pięknie, randka zaklepana <span class="pulse-heart" aria-hidden="true">💘</span>';
-      setAnimatedText(mainMessage, "Odwołanie możliwe tylko za zgodą komisji romantycznej.");
-      systemNote.textContent = "Na końcu procedury: odeślij certyfikat. Tak działa romantyczna biurokracja.";
+      questionTitle.innerHTML = 'No i pięknie, Skrzaciku. Randka zaklepana <span class="pulse-heart" aria-hidden="true">♥</span>';
+      setAnimatedText(mainMessage, "Odwołanie możliwe tylko po negocjacjach twarzą w twarz.");
+      systemNote.textContent = "Na końcu procedury: odeślij certyfikat. Tak działa dorosła romantyczna biurokracja.";
       systemNote.classList.add("show");
       dateMoods.classList.add("show");
       certificate.classList.add("show");
@@ -1181,7 +1235,7 @@
 
       selectedMood = tile.dataset.mood;
       updateCertificate();
-      setAnimatedText(moodResult, `Wybrano: ${selectedMood}. Przygotuj outfit 😌`);
+      setAnimatedText(moodResult, `Wybrano: ${selectedMood}. Przygotuj outfit i ten niewinny uśmiech.`);
       spawnHearts(10);
     }
 
@@ -1190,9 +1244,9 @@
       randomPlanButton.classList.remove("spinning");
       void randomPlanButton.offsetWidth;
       randomPlanButton.classList.add("spinning");
-      planResult.textContent = "Koło przeznaczenia się rozkręca...";
+      planResult.textContent = "Plan się rozgrzewa...";
       setTimeout(() => {
-        setAnimatedText(planResult, `Plan: ${plan}. Brzmi podejrzanie dobrze.`);
+        setAnimatedText(planResult, `Plan: ${plan}. Brzmi jak pretekst, który nam pasuje.`);
       }, 430);
       spawnHearts(5);
     }
@@ -1202,7 +1256,7 @@
       document.body.classList.toggle("dramatic-mode", isOn);
       dramaToggle.setAttribute("aria-pressed", String(isOn));
       noButton.classList.toggle("shake", isOn && !accepted);
-      setAnimatedText(dramaText, isOn ? "Odmowa? W tej ekonomii emocjonalnej?" : "");
+      setAnimatedText(dramaText, isOn ? "Odmowa? Przy takim napięciu? Odważnie." : "");
     }
 
     function dodgeWhenPointerIsClose(event) {
@@ -1221,7 +1275,7 @@
     }
 
     function tiltCard(event) {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (prefersReducedMotion.matches || coarsePointer.matches || compactViewport.matches) {
         return;
       }
 
@@ -1238,10 +1292,15 @@
     }
 
     function launchConfetti() {
+      if (prefersReducedMotion.matches) {
+        return;
+      }
+
       const colors = ["#ff2f64", "#ff86a8", "#ffffff", "#ffd166", "#8f2447", "#ffc4d5"];
+      const total = compactViewport.matches ? 28 : 58;
       confettiLayer.innerHTML = "";
 
-      for (let i = 0; i < 86; i += 1) {
+      for (let i = 0; i < total; i += 1) {
         const piece = document.createElement("span");
         piece.className = "confetti";
         piece.style.setProperty("--left", `${Math.random() * 100}%`);
@@ -1257,10 +1316,16 @@
     }
 
     function spawnHearts(count) {
-      for (let i = 0; i < count; i += 1) {
+      if (prefersReducedMotion.matches) {
+        return;
+      }
+
+      const total = compactViewport.matches ? Math.min(count, 5) : Math.min(count, 16);
+
+      for (let i = 0; i < total; i += 1) {
         const heart = document.createElement("span");
         heart.className = "pop-heart";
-        heart.textContent = i % 4 === 0 ? "💘" : "❤️";
+        heart.textContent = "♥";
         heart.style.setProperty("--left", `${randomBetween(12, 88)}%`);
         heart.style.setProperty("--top", `${randomBetween(16, 82)}%`);
         heart.style.setProperty("--size", `${randomBetween(18, 38)}px`);
@@ -1270,10 +1335,14 @@
     }
 
     function createAmbientHearts() {
-      for (let i = 0; i < 16; i += 1) {
+      if (prefersReducedMotion.matches || compactViewport.matches) {
+        return;
+      }
+
+      for (let i = 0; i < 8; i += 1) {
         const heart = document.createElement("span");
         heart.className = "ambient-heart";
-        heart.textContent = i % 3 === 0 ? "💖" : "❤️";
+        heart.textContent = "♥";
         heart.style.setProperty("--left", `${randomBetween(0, 100)}%`);
         heart.style.setProperty("--drift", `${randomBetween(-70, 70)}px`);
         heart.style.setProperty("--size", `${randomBetween(18, 42)}px`);
