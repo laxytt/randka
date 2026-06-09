@@ -1009,7 +1009,7 @@
       {
         question: "Gdybyś miała opisać nas jednym słowem, byłoby to:",
         answers: [
-          { text: "„Niebiezpieczni.", score: 28 },
+          { text: "„Niebezpieczni.”", score: 28 },
           { text: "Chaotyczni.", score: 24 },
           { text: "Uroczy.", score: 30 },
           { text: "Elektryzujący.", score: 0 }
@@ -1275,7 +1275,7 @@
 
       const now = Date.now();
       if (now - lastTeaseAt > 700) {
-        setAnimatedText(mainMessage, "Niezła próba kochanie. Ale dzisiaj odmów nie przyjmujemy <3");
+        setAnimatedText(mainMessage, "Niezła próba kochanie. Ale dzisiaj system odmów nie przyjmuje <3");
         lastTeaseAt = now;
       }
 
@@ -1482,20 +1482,11 @@
         handleRefusalAttempt(event);
         return;
       }
-
-      if (event.button === 0) {
-        teaseNoAttempt(event);
-      }
     });
 
     noButton.addEventListener("click", (event) => {
-      if (event.detail === 0) {
-        handleRefusalAttempt(event);
-        return;
-      }
-
-      teaseNoAttempt(event);
-    });
+  handleRefusalAttempt(event);
+});
 
     noButton.addEventListener("contextmenu", (event) => {
       handleRefusalAttempt(event);
