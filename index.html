@@ -890,7 +890,7 @@
       </div>
       <div class="secondary-card survey-card" aria-label="Ankieta randkowa">
         <div class="survey-header">
-          <h2 class="survey-title">Ankieta dla Skrzacika: ile napięcia zniesiesz?</h2>
+          <h2 class="survey-title">Chwila szczerości: ile napięcia zniesiesz?</h2>
           <span class="survey-pill" id="surveyStep">1/5</span>
         </div>
         <div class="survey-progress" aria-hidden="true"><span id="surveyProgress"></span></div>
@@ -1012,7 +1012,7 @@
           { text: "„Niebiezpieczni.", score: 28 },
           { text: "Chaotyczni.", score: 24 },
           { text: "Uroczy.", score: 30 },
-          { text: "Elektryzujący.", score: 0, bad: true, tease: "Przestrzeń może oddychać, ale chemia właśnie przewróciła oczami." }
+          { text: "Elektryzujący.", score: 0 }
         ]
       },
       {
@@ -1020,17 +1020,17 @@
         answers: [
           { text: "Moją największą słabość.", score: 26 },
           { text: "Moją największą fantazję.", score: 24 },
-          { text: "OCo naprawdę o Tobie myślę.", score: 22 },
-          { text: "Co mnie najbardziej ekscytuje w relacji.", score: 0, bad: true, tease: "Kanapa zgłosiła sprzeciw. To nie jest tylko mebel." }
+          { text: "Co naprawdę o Tobie myślę.", score: 22 },
+          { text: "Co mnie najbardziej ekscytuje w relacji.", score: 0}
         ]
       },
       {
         question: "Po randce wiadomość idealna brzmi:",
         answers: [
-          { text: "„Dotarłem/am. Ale myślami jeszcze nie wyszedłem/wyszłam”.", score: 28 },
-          { text: "„Kiedy drugi odcinek, Skrzaciku?”", score: 30 },
-          { text: "Mem, bo emocje trzeba opakować, zanim zrobią się za szczere.", score: 22 },
-          { text: "„Dziękuję za spotkanie, było poprawnie”.", score: 0, bad: true, tease: "Poprawnie? Ta randka właśnie wyprosiła tę odpowiedź z lokalu." }
+          { text: "„Ja: Dotarłam. Ale myślami jeszcze nie doszłam”.", score: 28 },
+          { text: "„Ty: Kiedy drugi odcinek, Skrzaciku?”", score: 30 },
+          { text: "Ja: Mem, bo emocje trzeba opakować, zanim zrobią się za szczere.", score: 22 },
+          { text: "„Dziękuję za spotkanie, było poprawnie”.", score: 0, bad: true, tease: "Lepiej już nic nie pisać ..." }
         ]
       }
     ];
@@ -1275,7 +1275,7 @@
 
       const now = Date.now();
       if (now - lastTeaseAt > 700) {
-        setAnimatedText(mainMessage, "Ładnie podchodzisz, Skrzaciku. Ale odmowa liczy się dopiero po PPM.");
+        setAnimatedText(mainMessage, "Niezła próba kochanie. Ale dzisiaj odmów nie przyjmujemy <3");
         lastTeaseAt = now;
       }
 
@@ -1284,7 +1284,7 @@
 
     function refusalMessageForAttempt() {
       if (refusalAttempts === 3) {
-        return "Nie uciekaj od przeznaczenia, Skrzaciku.";
+        return "Nie uciekaj od przeznaczenia, skarbie.";
       }
 
       if (refusalAttempts === 10) {
@@ -1315,7 +1315,7 @@
       setAnimatedText(mainMessage, refusalMessageForAttempt());
 
       if (refusalAttempts >= 5) {
-        systemNote.textContent = "System odrzucił odmowę. Uzasadnienie: za dużo chemii.";
+        systemNote.textContent = "System odrzucił odmowę. Uzasadnienie: za dużo chemii między Wami.";
         systemNote.classList.add("show", "bump");
       }
 
