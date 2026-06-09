@@ -939,6 +939,7 @@
   Zaskocz: "Odważnie, Skrzaciku. Biorę stery i nie odpowiadam za efekt."
 };
 
+    let lastTeaseAt = 0;
     let refusalAttempts = 0;
     let accepted = false;
     let lastRefusalAt = 0;
@@ -948,6 +949,15 @@
     let surveyIndex = 0;
     let surveyScore = 0;
     let surveyResultLabel = "ankieta nieukończona";
+    let lastMoveAt = 0;
+
+// system trudności
+function getDifficulty() {
+  if (refusalAttempts < 3) return "easy";
+  if (refusalAttempts < 6) return "medium";
+  if (refusalAttempts < 9) return "hard";
+  return "insane";
+}
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const coarsePointer = window.matchMedia("(pointer: coarse)");
@@ -1265,22 +1275,65 @@
     }
 
     function teaseNoAttempt(event) {
-      if (accepted || noButton.classList.contains("hidden")) {
-        return;
-      }
+  if (accepted || noButton.classList.contains("hidden")) return;
 
-      if (event) {
-        event.preventDefault();
-      }
+  const now = Date.now();
 
-      const now = Date.now();
-      if (now - lastTeaseAt > 700) {
-        setAnimatedText(mainMessage, "Niezła próba kochanie. Ale dzisiaj system odmów nie przyjmuje <3");
-        lastTeaseAt = now;
-      }
+  // ✅ cooldown (żeby nie teleportował co 1ms)
+  const difficulty = getDifficulty();
+  const cooldownMap = {
+    easy: 600,
+    medium: 420,
+    hard: 260,
+    insane: 120
+  };
 
-      moveNoButton();
+  if (now - lastMoveAt < cooldownMap[difficulty]) return;
+  lastMoveAt = now;
+
+  if (event) event.preventDefault();
+
+  // ✅ szansa że NIE ucieknie (czyli da się kliknąć)
+  const successChanceMap = {
+    easy: 0.55,
+    medium: 0.35,
+    hard: 0.18,
+    insane: 0.08
+  };
+
+  if (Math.random() < successChanceMap[difficulty]) {
+    // czasem stoi w miejscu -> da się kliknąć
+    return;
+  }
+
+  // ✅ zmienne dystanse
+  const teaseTexts = {
+    easy: "O, prawie 😏",
+    medium: "Szybciej, szybciej 😈",
+    hard: "Za wolno...",
+    insane: "Nie masz już szans 😈"
+  };
+
+  if (now - lastTeaseAt > 700) {
+    setAnimatedText(mainMessage, teaseTexts[difficulty]);
+    lastTeaseAt = now;
+  }
+
+  // 🧠 fake move (czasem robi krótki twitch zamiast teleportu)
+  if (difficulty === "hard" || difficulty === "insane") {
+    if (Math.random() < 0.3) {
+      const x = randomBetween(-20, 20);
+      const y = randomBetween(-20, 20);
+      noButton.style.transform = `translate(${x}px, ${y}px)`;
+      setTimeout(() => {
+        noButton.style.transform = "";
+      }, 120);
+      return;
     }
+  }
+
+  moveNoButton();
+}
 
     function refusalMessageForAttempt() {
       if (refusalAttempts === 3) {
@@ -1379,19 +1432,26 @@
     }
 
     function dodgeWhenPointerIsClose(event) {
-      if (accepted || event.pointerType === "touch") {
-        return;
-      }
+  if (accepted || event.pointerType === "touch") return;
 
-      const rect = noButton.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
+  const rect = noButton.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
 
-      if (distance < 92) {
-        teaseNoAttempt(event);
-      }
-    }
+  const difficulty = getDifficulty();
+
+  const distanceMap = {
+    easy: 40,
+    medium: 60,
+    hard: 80,
+    insane: 110
+  };
+
+  if (distance < distanceMap[difficulty]) {
+    teaseNoAttempt(event);
+  }
+}
 
     function tiltCard(event) {
       if (prefersReducedMotion.matches || coarsePointer.matches || compactViewport.matches) {
