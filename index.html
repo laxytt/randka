@@ -939,7 +939,6 @@
   Zaskocz: "Odważnie, Skrzaciku. Biorę stery i nie odpowiadam za efekt."
 };
 
-    let lastTeaseAt = 0;
     let refusalAttempts = 0;
     let accepted = false;
     let lastRefusalAt = 0;
@@ -1257,6 +1256,7 @@ function getDifficulty() {
 
       noButton.style.left = `${left}px`;
       noButton.style.top = `${top}px`;
+      noButton.style.transform = "";
     }
 
     function updateNoButtonState() {
