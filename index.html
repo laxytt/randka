@@ -932,6 +932,12 @@
     const burstLayer = document.getElementById("burstLayer");
     const questionTitle = document.getElementById("questionTitle");
     const finalStamp = document.getElementById("finalStamp");
+    const moodMessages = {
+  Pizza: "Netflix, pizza i podejrzanie bliska odległość na kanapie.",
+  Kolacja: "Elegancko. Kolacja + spojrzenia, które mówią więcej niż menu.",
+  Trip: "Pakuj się. Jedziemy bez planu, ale z chemią.",
+  Zaskocz: "Odważnie, Skrzaciku. Biorę stery i nie odpowiadam za efekt."
+};
 
     let refusalAttempts = 0;
     let accepted = false;
@@ -959,17 +965,31 @@
     ];
 
     const datePlans = [
-      "pizza, film i zbyt wygodna kanapa",
-      "kawa i spacer z podejrzanie bliskim dystansem",
-      "kolacja i deser, którego nikt nie oddaje bez negocjacji",
-      "kino i popcorn jako oficjalny pretekst",
-      "spacer nocą i cisza, która mówi za dużo",
-      "niespodzianka w wersji dla dorosłych, ale z klasą"
-    ];
+  "pizza, film i pretekst, żeby usiąść zdecydowanie za blisko",
+  "kawa, która stygnie, bo rozmowa robi się za dobra",
+  "kolacja i przeciągające się spojrzenia ponad stołem",
+  "kino, w którym film jest tylko tłem do reszty",
+  "nocny spacer i cisza, która robi więcej niż słowa",
+  "kanapa, koc i decyzje, które wymykają się planowi",
+  "deser na pół, ale granice już nie do końca",
+  "długi spacer i momenty, które trwają trochę za długo",
+  "lampka wina i rozmowy, które skręcają w niebezpieczne rejony",
+  "muzyka w tle i napięcie, które robi resztę roboty",
+  "przypadkowe dotknięcia, które przestają być przypadkowe",
+  "plan niby spokojny, ale chemia ma inne zdanie",
+  "zbyt dobra atmosfera, żeby skończyć o rozsądnej godzinie",
+  "wieczór, który zaczyna się normalnie i kończy pamiętnie",
+  "mały plan i bardzo duża energia między nami",
+  "niewinny start i rozwój sytuacji poza kontrolą",
+  "cisza, spojrzenia i bardzo nieprzypadkowa bliskość",
+  "randka, która szybko przestaje być tylko randką",
+  "komfort + chemia = sytuacja trudna do zatrzymania",
+  "delikatny chaos i decyzje podejmowane w locie"
+];
 
     const surveyQuestions = [
       {
-        question: "Skrzacik dostaje deser z jednej łyżeczki. Co robisz?",
+        question: "Dostajesz deser z jednej łyżeczki. Co robisz?",
         answers: [
           { text: "Próbuję grzecznie, ale kontakt wzrokowy robi swoje.", score: 20 },
           { text: "Mówię: „uważaj, to już wygląda jak deklaracja”.", score: 25 },
@@ -978,30 +998,30 @@
         ]
       },
       {
-        question: "W kinie przypadkiem dotykają się dłonie przy popcornie. Reakcja?",
+        question: "Co najbardziej przyciąga Cię we mnie?",
         answers: [
-          { text: "Udajesz, że to przypadek. Bardzo długi przypadek.", score: 24 },
-          { text: "Zabierasz popcorn, ale zostawiasz rękę za blisko.", score: 26 },
-          { text: "Patrzysz na ekran, jakby film nadal miał znaczenie.", score: 22 },
-          { text: "Odsuwam rękę i zachowuję dystans jak w urzędzie.", score: 0, bad: true, tease: "Dystans urzędowy? Nie w tym repertuarze, Skrzaciku." }
+          { text: "Mój charakter.", score: 24 },
+          { text: "Mój wygląd.", score: 26 },
+          { text: "To jak na Ciebie patrzę.", score: 22 },
+          { text: "Coś pomiędzy", score: 0, bad: true, tease: "Pff, pomiędzy... Jesteśmy tu tylko my i nic pomiędzy nami ;]" }
         ]
       },
       {
-        question: "Najbezpieczniejszy pretekst, żeby usiąść bliżej:",
+        question: "Gdybyś miała opisać nas jednym słowem, byłoby to:",
         answers: [
-          { text: "„Zimno mi”, nawet jeśli pogoda temu zaprzecza.", score: 28 },
-          { text: "Pokazujesz coś w telefonie i skracasz dystans.", score: 24 },
-          { text: "Pożyczona bluza, która wraca dopiero w drugim sezonie.", score: 30 },
-          { text: "Siadam daleko, bo osobista przestrzeń musi oddychać.", score: 0, bad: true, tease: "Przestrzeń może oddychać, ale chemia właśnie przewróciła oczami." }
+          { text: "„Niebiezpieczni.", score: 28 },
+          { text: "Chaotyczni.", score: 24 },
+          { text: "Uroczy.", score: 30 },
+          { text: "Elektryzujący.", score: 0, bad: true, tease: "Przestrzeń może oddychać, ale chemia właśnie przewróciła oczami." }
         ]
       },
       {
-        question: "Największa czerwona flaga na randce?",
+        question: "Co najbardziej chciałabyś we mnie zobaczyć?",
         answers: [
-          { text: "Mówi, że nie ma miejsca na deser. Podejrzane.", score: 26 },
-          { text: "Nie łapie podtekstu. Trzeba będzie rysować.", score: 24 },
-          { text: "Odpisuje samo „ok”. Bez napięcia, bez klasy.", score: 22 },
-          { text: "Twierdzi, że kanapa to tylko mebel.", score: 0, bad: true, tease: "Kanapa zgłosiła sprzeciw. To nie jest tylko mebel." }
+          { text: "Moją największą słabość.", score: 26 },
+          { text: "Moją największą fantazję.", score: 24 },
+          { text: "OCo naprawdę o Tobie myślę.", score: 22 },
+          { text: "Co mnie najbardziej ekscytuje w relacji.", score: 0, bad: true, tease: "Kanapa zgłosiła sprzeciw. To nie jest tylko mebel." }
         ]
       },
       {
@@ -1319,17 +1339,22 @@
       spawnHearts(30);
     }
 
-    function chooseMood(event) {
-      const tile = event.target.closest("[data-mood]");
-      if (!tile) {
-        return;
-      }
+   function chooseMood(event) {
+  const tile = event.target.closest("[data-mood]");
+  if (!tile) {
+    return;
+  }
 
-      selectedMood = tile.dataset.mood;
-      setAnimatedText(moodResult, `Wybrano: ${selectedMood}. Przygotuj outfit i ten niewinny uśmiech.`);
-      updateCertificateVisibility();
-      spawnHearts(10);
-    }
+  selectedMood = tile.dataset.mood;
+
+  const customText = moodMessages[selectedMood] 
+    || `Wybrano: ${selectedMood}`;
+
+  setAnimatedText(moodResult, customText);
+
+  updateCertificateVisibility();
+  spawnHearts(10);
+}
 
     function drawRandomPlan() {
       const plan = datePlans[randomBetween(0, datePlans.length - 1)];
